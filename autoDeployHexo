@@ -1,0 +1,96 @@
+#!/bin/bash
+
+# the information
+# you dragonfly website directory
+dragonfly_path='hexo/path/website'
+#my github user name and password
+user='********'
+pswd='********'
+
+if [ -z "$dragonfly_path" ]
+then
+	echo "please setup you dragonfly_path"
+fi
+if [ -z "$user" ]
+then
+	echo "please setup you github user name"
+fi
+if [ -z "$pswd" ]
+then
+	echo "please setup you github password"
+fi
+if [ -z "$1" ]
+then
+	echo "Error: 请输入文件名！"
+	exit
+fi
+
+if [ "$1" = "-m" ]
+then
+	echo "Error: please input correct file name"
+	exit
+fi
+
+# get the 
+MY_PATH="`dirname \"$0\"`"              # relative
+MY_PATH="`( cd \"$MY_PATH\" && pwd )`"  # absolutized and normalized
+if [ -z "$MY_PATH" ] ; then
+  # error; for some reason, the path is not accessible
+  # to the script (e.g. permissions re-evaled after suid)
+  exit 1  # fail
+fi
+
+# go to dragonfly website directory
+cd $dragonfly_path
+cd ../ 
+git pull
+
+cd website/
+# generate html template
+hexo generate
+
+/usr/bin/expect << EOF
+set timeout 30
+spawn hexo deploy
+expect {
+	"*es/no" {send "yes\r";exp_continue}
+	"Username*" {send "$user\r";exp_continue}
+	"Password*" {send "$pswd\r"}	
+}
+expect eof
+EOF
+
+
+# deploy website
+#hexo deploy
+
+#git push md5 files to master
+cd ../
+git add -A
+git commit -m "$1"
+
+/usr/bin/expect << EOF
+set timeout 30
+spawn git push
+expect {
+	"*es/no" {send "yes\r";exp_continue}
+	"Username*" {send "$user\r";exp_continue}
+	"Password*" {send "$pswd\r"}	
+}
+expect eof
+EOF
+
+# start to send email
+cd $MY_PATH
+if [ "$2" = "-m" ]
+then
+	python send_email.py "$1"
+fi
+
+
+
+
+
+
+
+
