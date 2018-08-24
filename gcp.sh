@@ -14,4 +14,4 @@ git status
 git add . 
 git commit -m "$p" 
 git pull 
-git push origin ${p} 
+git push origin "$p" 
