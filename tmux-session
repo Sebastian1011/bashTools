@@ -3,13 +3,13 @@
 # TODO: persist and restore the state & position of panes.
 set -e
 
-dump() {
-	local d=$'\t'
-	tmux list-windows -a -F "#S${d}#W${d}#{pane_current_path}"
-}
-
 save() {
-	dump > ~/.tmux-session
+	if tmux info &> /dev/null; then
+		local d=$'\t'
+		tmux list-windows -a -F "#S${d}#W${d}#{pane_current_path}" > ~/.tmux-session
+	else
+		exit 1
+	fi
 }
 
 terminal_size() {
