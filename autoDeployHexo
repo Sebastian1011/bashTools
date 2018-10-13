@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # the information
-# you dragonfly website directory
+# you hexo website directory
 dragonfly_path='hexo/path/website'
 #my github user name and password
 user='********'
