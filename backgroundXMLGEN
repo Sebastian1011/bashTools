@@ -1,4 +1,4 @@
-files=`ls -U /usr/share/backgrounds/carBackground | grep -v contest`
+files=`ls -U /usr/share/backgrounds/imageFolder | grep -v contest`
 last_file='empty'
 
 echo '<background>'
@@ -18,17 +18,17 @@ do
 		last_file=$current_file
 		echo '    <static>'
 		echo '        <duration>300.0</duration>'
-		echo "        <file>/usr/share/backgrounds/carBackground/$last_file</file>"
+		echo "        <file>/usr/share/backgrounds/imageFolder/$last_file</file>"
 		echo '    </static>'
 	else
 		echo '    <transition>'
 		echo '        <duration>5.0</duration>'
-		echo "        <from>/usr/share/backgrounds/carBackground/$last_file</from>"
-		echo "	      <to>/usr/share/backgrounds/carBackground/$current_file</to>"
+		echo "        <from>/usr/share/backgrounds/imageFolder/$last_file</from>"
+		echo "	      <to>/usr/share/backgrounds/imageFolder/$current_file</to>"
 		echo '    </transition>'
 		echo '    <static>'
 		echo '        <duration>300.0</duration>'
-		echo "        <file>/usr/share/backgrounds/carBackground/$current_file</file>"
+		echo "        <file>/usr/share/backgrounds/imageFolder/$current_file</file>"
 		echo '    </static>'
 		last_file=$current_file
 	fi
